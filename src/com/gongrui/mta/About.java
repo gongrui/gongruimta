@@ -15,9 +15,7 @@ public class About extends Activity {
     }
   
     public void about_close(View v) {  
-      	Intent intent = new Intent();
-		intent.setClass(About.this,Main.class);
-		startActivity(intent);
+      
 		this.finish();
       }  
    
