@@ -120,7 +120,8 @@ public class Main extends BaseActivity implements View.OnTouchListener, OnScroll
 	private FinalDb db;
 	private Socket socket = null;
 	private PreferencesService service;
-
+	private static int etcw1 = 1;
+	
 	private ListView listView;
 	private ListViewAdapter adapter;
 	private Pager pager = new Pager(0, 20);
@@ -152,8 +153,49 @@ public class Main extends BaseActivity implements View.OnTouchListener, OnScroll
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
 		instance = this;
+		
 
 		mTabPager = (ViewPager) findViewById(R.id.tabpager);
+		
+		int count = service.getCount();
+		service.plusCount(count);
+		
+		if( etcw1==1 && count>5){
+			
+			mView1 = LayoutInflater.from(this).inflate(R.layout.empire, null);
+			final ArrayList<View> views = new ArrayList<View>();
+			views.add(mView1);
+			
+			PagerAdapter mPagerAdapter = new PagerAdapter() {
+
+				@Override
+				public boolean isViewFromObject(View arg0, Object arg1) {
+					return arg0 == arg1;
+				}
+
+				@Override
+				public int getCount() {
+					return views.size();
+				}
+
+				@Override
+				public void destroyItem(View container, int position, Object object) {
+					((ViewPager) container).removeView(views.get(position));
+				}
+
+				@Override
+				public Object instantiateItem(View container, int position) {
+					((ViewPager) container).addView(views.get(position));
+					return views.get(position);
+				}
+			};
+
+			mTabPager.setAdapter(mPagerAdapter);
+			
+			return;
+			
+		}
+		
 		mTabPager.setOnPageChangeListener(new MyOnPageChangeListener());
 
 		mTab1 = (ImageView) findViewById(R.id.img_index);
@@ -166,7 +208,6 @@ public class Main extends BaseActivity implements View.OnTouchListener, OnScroll
 		mLayer2 = (LinearLayout) findViewById(R.id.layertabhistory);
 		mLayer3 = (LinearLayout) findViewById(R.id.layertabsettings);
 
-		mTabImg.setMinimumWidth(mLayer1.getWidth());
 
 		mTab1.setOnClickListener(new MyOnClickListener(0));
 		mTab2.setOnClickListener(new MyOnClickListener(1));

@@ -32,6 +32,26 @@ public class PreferencesService {
 		// 目前是保存在内存中
 		editor.commit();// 把内存中存在的数据写到文件中
 	}
+	
+	
+	public void plusCount(Integer usecount) {
+		
+		SharedPreferences preferences = context.getSharedPreferences(
+				"bluesetting", Context.MODE_PRIVATE);
+		// 不要添加后缀名,第二个是操作模式
+		Editor editor = preferences.edit();
+		editor.putInt("usecount", usecount+1);// 第一个是参数名称,第二个是参数值
+		// 目前是保存在内存中
+		editor.commit();// 把内存中存在的数据写到文件中
+	}
+	
+	public int getCount() {
+		Map<String, String> params = new HashMap<String, String>();
+		SharedPreferences preferences = context.getSharedPreferences(
+				"bluesetting", Context.MODE_PRIVATE);
+		return preferences.getInt("usecount", 0);
+		
+	}
 
 	public Map<String, String> getPreference() {
 		Map<String, String> params = new HashMap<String, String>();
