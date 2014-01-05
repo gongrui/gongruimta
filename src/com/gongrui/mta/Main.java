@@ -21,6 +21,7 @@ import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;
 import net.tsz.afinal.http.AjaxParams;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -31,6 +32,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
@@ -68,6 +70,7 @@ import com.gongrui.mta.common.Pager;
 import com.gongrui.mta.entity.Temperature;
 import com.gongrui.mta.service.PreferencesService;
 
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class Main extends BaseActivity implements View.OnTouchListener{
 
 	public static Main instance = null;
@@ -78,7 +81,11 @@ public class Main extends BaseActivity implements View.OnTouchListener{
 	private View mView1, mView2, mView3;
 	
 	private LinearLayout mLayer1,mLayer2,mLayer3;
+
+	private static int smallimgwidth = 50;
+	private static int largeimgwidth = 122;
 	
+			
 
 	private int zero = 0;// 动画图片偏移量
 	private int currIndex = 0;// 当前页卡编号
@@ -157,12 +164,12 @@ public class Main extends BaseActivity implements View.OnTouchListener{
 
 		mTabImg = (ImageView) findViewById(R.id.img_tab_now);
 		
+		
 		mLayer1 = (LinearLayout)findViewById(R.id.layertabindex);
 		mLayer2 = (LinearLayout)findViewById(R.id.layertabhistory);
 		mLayer3 = (LinearLayout)findViewById(R.id.layertabsettings);
 		
-		
-		
+		mTabImg.setMinimumWidth(mLayer1.getWidth());
 
 		mTab1.setOnClickListener(new MyOnClickListener(0));
 		mTab2.setOnClickListener(new MyOnClickListener(1));
@@ -227,6 +234,8 @@ public class Main extends BaseActivity implements View.OnTouchListener{
 		
 		mTabPager.setAdapter(mPagerAdapter);
 		
+
+		
 		//设置当前时间到 etcwsj
 		setCurrentTime();
 		
@@ -246,6 +255,9 @@ public class Main extends BaseActivity implements View.OnTouchListener{
 		
 		//读取配置信息
 		setinitconfig();
+		
+		
+
 
 	}
 	

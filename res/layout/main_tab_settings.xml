@@ -1,134 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#fcfcfc"
-    android:orientation="vertical" >
+    android:scrollbars="none" >
 
-    <RelativeLayout
-        android:id="@+id/title"
-        android:layout_width="fill_parent"
-        android:layout_height="45dp"
-        android:background="@drawable/title_bar"
-        android:gravity="center_vertical" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="设置"
-            android:textColor="#ffffff"
-            android:textSize="20sp" />
-
-        <Button
-            android:layout_width="67dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="5dp"
-            android:background="@drawable/title_btn_right"
-            android:text="关于"
-            android:onClick="startAbout"
-            android:textColor="#fff"
-            android:textSize="15dp" />
-        
-    </RelativeLayout>
-
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@id/title"
-        android:orientation="vertical"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:paddingTop="15dp" >
+        android:background="#fcfcfc"
+        android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="40dip"
-            android:layout_marginTop="15dp"
-            android:ems="5"
-            android:gravity="center_vertical"
-            android:text="传感器IP"
-            android:textColor="#000000" />
-
-        <EditText
-            android:id="@+id/et_serverip"
-            android:layout_width="wrap_content"
-            android:layout_height="40dip"
-            android:layout_marginTop="15dp"
-            android:layout_toRightOf="@+id/textView1"
-            android:ems="12"
-            android:inputType="text" />
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="40dip"
-            android:layout_below="@id/textView1"
-            android:ems="5"
-            android:gravity="center_vertical"
-            android:text="传感器端口"
-            android:textColor="#000000" />
-
-        <EditText
-            android:id="@+id/et_serverport"
-            android:layout_width="wrap_content"
-            android:layout_height="40dip"
-            android:layout_alignBottom="@id/textView2"
-            android:layout_toRightOf="@id/textView2"
-            android:ems="12"
-            android:inputType="text" />
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="40dip"
-            android:layout_below="@id/textView2"
-            android:ems="5"
-            android:gravity="center_vertical"
-            android:text="服务器URL"
-            android:textColor="#000000" />
-
-        <EditText
-            android:id="@+id/et_serverurl"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignRight="@+id/et_serverport"
-            android:layout_below="@id/et_serverport"
-            android:layout_toRightOf="@id/textView3"
-            android:gravity="top|left"
-            android:inputType="textMultiLine|textUri"
-            android:lines="5" />
-
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/title"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/et_serverurl"
-            android:layout_marginTop="12dp"
-            android:gravity="bottom" >
+            android:layout_height="45dp"
+            android:background="@drawable/title_bar"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="设置"
+                android:textColor="#ffffff"
+                android:textSize="20sp" />
 
             <Button
-                android:id="@+id/bt_savedefault"
-                android:layout_width="fill_parent"
-                android:layout_height="40dp"
-                android:layout_weight="1"
-                android:background="@drawable/btn_style_green"
-                android:onClick="btnsettingdefault"
-                android:text="缺省设置"
-                android:textColor="#fff" />
+                android:layout_width="67dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/title_btn_right"
+                android:onClick="startAbout"
+                android:text="关于"
+                android:textColor="#fff"
+                android:textSize="15dp" />
+        </RelativeLayout>
 
-            <Button
-                android:id="@+id/bt_savesetting"
-                android:layout_width="fill_parent"
-                android:layout_height="40dp"
-                android:layout_weight="1"
-                android:background="@drawable/btn_style_green"
-                android:onClick="btnsettingsave"
-                android:text="保存设置"
-                android:textColor="#fff" />
-        </LinearLayout>
-    </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@id/title"
+            android:orientation="vertical"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="15dp" >
 
-</LinearLayout>
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="40dip"
+                android:layout_marginTop="15dp"
+                android:ems="5"
+                android:gravity="center_vertical"
+                android:text="传感器IP"
+                android:textColor="#000000" />
+
+            <EditText
+                android:id="@+id/et_serverip"
+                android:layout_width="fill_parent"
+                android:layout_height="40dip"
+                android:layout_marginTop="15dp"
+                android:layout_toRightOf="@+id/textView1"
+                android:ems="12"
+                android:inputType="text" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="40dip"
+                android:layout_below="@id/textView1"
+                android:ems="5"
+                android:gravity="center_vertical"
+                android:text="传感器端口"
+                android:textColor="#000000" />
+
+            <EditText
+                android:id="@+id/et_serverport"
+                android:layout_width="fill_parent"
+                android:layout_height="40dip"
+                android:layout_alignBottom="@id/textView2"
+                android:layout_toRightOf="@id/textView2"
+                android:ems="12"
+                android:inputType="text" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="40dip"
+                android:layout_below="@id/textView2"
+                android:ems="5"
+                android:gravity="center_vertical"
+                android:text="服务器URL"
+                android:textColor="#000000" />
+
+            <EditText
+                android:id="@+id/et_serverurl"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@+id/et_serverport"
+                android:layout_below="@id/et_serverport"
+                android:layout_toRightOf="@id/textView3"
+                android:gravity="top|left"
+                android:inputType="textMultiLine|textUri"
+                android:lines="5" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/et_serverurl"
+                android:layout_marginTop="12dp"
+                android:gravity="bottom" >
+
+                <Button
+                    android:id="@+id/bt_savedefault"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_style_green"
+                    android:onClick="btnsettingdefault"
+                    android:text="缺省设置"
+                    android:textColor="#fff" />
+
+                <Button
+                    android:id="@+id/bt_savesetting"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_style_green"
+                    android:onClick="btnsettingsave"
+                    android:text="保存设置"
+                    android:textColor="#fff" />
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
+</ScrollView>

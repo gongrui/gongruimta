@@ -15,11 +15,11 @@
 
         <ImageView
             android:id="@+id/img_tab_now"
-            android:layout_width="wrap_content"
+            android:layout_width="118dp"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_gravity="bottom"
-            android:scaleType="matrix"
+            android:scaleType="center"
             android:src="@drawable/tab_bg" />
 
         <LinearLayout
