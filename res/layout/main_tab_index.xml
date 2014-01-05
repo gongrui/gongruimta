@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#fcfcfc"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/title"
+        android:layout_width="fill_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/title_bar"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="测温"
+            android:textColor="#ffffff"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/body"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_margin="10dp"
+        android:orientation="vertical" >
+
+        <EditText
+            android:id="@+id/etcwsj"
+            android:layout_width="fill_parent"
+            android:layout_height="40dip"
+            android:hint="测温时间 |请点击修改"
+            android:inputType="datetime" />
+
+        <LinearLayout
+            android:id="@+id/line2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6sp"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/tvt1"
+                android:layout_width="0dp"
+                android:layout_height="40dip"
+                android:layout_weight="1.44"
+                android:gravity="center_vertical"
+                android:text="温度1"
+                android:textColor="#666"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/ett1"
+                android:layout_width="0dp"
+                android:layout_height="40dip"
+                android:layout_weight="2"
+                android:inputType="number"
+                android:singleLine="true" />
+
+            <TextView
+                android:id="@+id/tvgc"
+                android:layout_width="0dp"
+                android:layout_height="40dip"
+                android:layout_weight="1.44"
+                android:gravity="center_vertical"
+                android:text="高程"
+                android:textColor="#666"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etgc"
+                android:layout_width="0dp"
+                android:layout_height="40dip"
+                android:layout_weight="2"
+                android:inputType="number" />
+        </LinearLayout>
+        <!-- 第二行 -->
+
+        <LinearLayout
+            android:id="@+id/line3"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6sp"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/tvt2"
+                android:layout_width="0dp"
+                android:layout_height="40dip"
+                android:layout_weight="1.44"
+                android:gravity="center_vertical"
+                android:text="温度2"
+                android:textColor="#666"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/ett2"
+                android:layout_width="0dp"
+                android:layout_height="40dip"
+                android:layout_weight="2"
+                android:inputType="number" />
+
+            <TextView
+                android:id="@+id/tvbd"
+                android:layout_width="0dp"
+                android:layout_height="40dip"
+                android:layout_weight="1.44"
+                android:gravity="center_vertical"
+                android:text="坝段"
+                android:textColor="#666"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etbd"
+                android:layout_width="0dp"
+                android:layout_height="40dip"
+                android:layout_weight="2"
+                android:inputType="number" />
+        </LinearLayout>
+
+        <!-- 第三行 -->
+
+        <LinearLayout
+            android:id="@+id/line4"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6sp"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/tvt3"
+                android:layout_width="0dp"
+                android:layout_height="40dip"
+                android:layout_weight="1.44"
+                android:gravity="center_vertical"
+                android:text="温度3"
+                android:textColor="#666"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/ett3"
+                android:layout_width="0dp"
+                android:layout_height="40dip"
+                android:layout_weight="2"
+                android:ems="6"
+                android:inputType="number" />
+
+            <TextView
+                android:id="@+id/tvcw"
+                android:layout_width="0dp"
+                android:layout_height="40dip"
+                android:layout_weight="1.44"
+                android:gravity="center_vertical"
+                android:text="仓位"
+                android:textColor="#666"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etcw"
+                android:layout_width="0dp"
+                android:layout_height="40dip"
+                android:layout_weight="2"
+                android:ems="6"
+                android:inputType="number" />
+        </LinearLayout>
+
+        <!-- 第四行 -->
+
+        <LinearLayout
+            android:id="@+id/line5"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6sp"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/tvhjwd"
+                android:layout_width="0dp"
+                android:layout_height="40dip"
+                android:layout_weight="1.44"
+                android:gravity="center_vertical"
+                android:text="环境温度"
+                android:textColor="#666"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/ethjwd"
+                android:layout_width="0dp"
+                android:layout_height="40dip"
+                android:layout_weight="2"
+                android:inputType="number" />
+
+            <TextView
+                android:id="@+id/tvhjsd"
+                android:layout_width="0dp"
+                android:layout_height="40dip"
+                android:layout_weight="1.44"
+                android:gravity="center_vertical"
+                android:text="环境湿度"
+                android:textColor="#666"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/ethjsd"
+                android:layout_width="0dp"
+                android:layout_height="40dip"
+                android:layout_weight="2"
+                android:inputType="number" />
+        </LinearLayout>
+
+        <!-- 第5行 -->
+
+        <LinearLayout
+            android:id="@+id/line5"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6sp"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/tvjd"
+                android:layout_width="0dp"
+                android:layout_height="40dip"
+                android:layout_weight="1.44"
+                android:gravity="center_vertical"
+                android:text="经度"
+                android:textColor="#666"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etjd"
+                android:layout_width="0dp"
+                android:layout_height="40dip"
+                android:layout_weight="2"
+                android:inputType="number" />
+
+            <TextView
+                android:id="@+id/tvwd"
+                android:layout_width="0dp"
+                android:layout_height="40dip"
+                android:layout_weight="1.44"
+                android:gravity="center_vertical"
+                android:text="纬度"
+                android:textColor="#666"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etwd"
+                android:layout_width="0dp"
+                android:layout_height="40dip"
+                android:layout_weight="2"
+                android:inputType="number" />
+        </LinearLayout>
+
+        <!-- 第七行 -->
+
+        <LinearLayout
+            android:id="@+id/line8"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6sp"
+            android:orientation="horizontal" >
+
+            <EditText
+                android:id="@+id/etwz"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:gravity="top|left"
+                android:hint="地址 |请点击右侧获取按钮"
+                android:inputType="textMultiLine"
+                android:lines="2" />
+
+            <Button
+                android:id="@+id/bt_getwz"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_weight="0.99"
+                android:background="@drawable/btn_style_white"
+                android:gravity="center_vertical|center_horizontal"
+                android:onClick="btngetwz"
+                android:text="获取"
+                android:textColor="#666"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btcontain1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6sp"
+            android:gravity="bottom" >
+
+            <Button
+                android:id="@+id/btget"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:background="@drawable/btn_style_green"
+                android:onClick="btngetwd"
+                android:padding="10dip"
+                android:text="获取温度"
+                android:textColor="#fff" />
+
+            <Button
+                android:id="@+id/btsave"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:background="@drawable/btn_style_green"
+                android:onClick="btnsavelocal"
+                android:padding="10dip"
+                android:text="保存"
+                android:textColor="#fff" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6sp"
+            android:gravity="bottom" >
+
+            <Button
+                android:id="@+id/btsetwifi"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:background="@drawable/btn_style_green"
+                android:onClick="btnselectwifi"
+                android:padding="10dip"
+                android:text="选择wifi"
+                android:textColor="#fff" />
+
+            <Button
+                android:id="@+id/btcommit"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:background="@drawable/btn_style_green"
+                android:onClick="btncommitserver"
+                android:padding="10dip"
+                android:text="提交服务器"
+                android:textColor="#fff" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

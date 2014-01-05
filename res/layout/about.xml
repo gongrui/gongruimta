@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+ <LinearLayout   xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/linearLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"        
+        android:gravity="center"
+        android:orientation="vertical"
+        android:background="#eee" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center" >
+            
+            <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/log02" />
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="传感测温"
+                android:textColor="#000000"
+                android:textSize="35sp" />
+            
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:textColor="#000"
+            android:textSize="22sp" />
+
+       
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="6dp"
+            android:layout_marginTop="40dp"
+            android:gravity="center"
+            android:text="一个通过温度传感获取温度的程序\n更新于 2013年1月5日"
+            android:textSize="14sp"
+            android:textColor="#444"  />
+
+        <Button
+            android:id="@+id/about_close_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/btn_style_green"
+            android:gravity="center"
+            android:paddingLeft="130dp"
+            android:paddingRight="130dp"
+            android:text="关闭"
+            android:onClick="about_close"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+
+    </LinearLayout>
