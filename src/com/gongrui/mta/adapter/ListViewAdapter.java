@@ -111,7 +111,7 @@ public class ListViewAdapter extends BaseAdapter {
 //			}
 //		});
 
-		viewHolder.tvContent.setText(String.format("%s-%s-%s", item.getGc(),item.getBd(),item.getCw()));
+		viewHolder.tvContent.setText(String.format("[%s] %s-%s-%s",item.getId(), item.getGc(),item.getBd(),item.getCw()));
 
 		viewHolder.tvCwwd.setText(String.format("(%s %s %s)", item.getWd1(), item.getWd2(), item.getWd3()));
 		

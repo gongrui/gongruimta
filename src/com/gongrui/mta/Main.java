@@ -39,6 +39,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.InputType;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Display;
@@ -52,6 +53,8 @@ import android.view.View.OnCreateContextMenuListener;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.DatePicker;
@@ -71,7 +74,7 @@ import com.gongrui.mta.entity.Temperature;
 import com.gongrui.mta.service.PreferencesService;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class Main extends BaseActivity implements View.OnTouchListener{
+public class Main extends BaseActivity implements View.OnTouchListener, OnScrollListener {
 
 	public static Main instance = null;
 
@@ -79,19 +82,17 @@ public class Main extends BaseActivity implements View.OnTouchListener{
 	private ImageView mTabImg;// 动画图片
 	private ImageView mTab1, mTab2, mTab3;
 	private View mView1, mView2, mView3;
-	
-	private LinearLayout mLayer1,mLayer2,mLayer3;
+
+	private LinearLayout mLayer1, mLayer2, mLayer3;
 
 	private static int smallimgwidth = 50;
 	private static int largeimgwidth = 122;
-	
-			
 
 	private int zero = 0;// 动画图片偏移量
 	private int currIndex = 0;// 当前页卡编号
 	private int one;// 单个水平动画位移
 	private int two;
-	
+
 	private LinearLayout mClose;
 	private LinearLayout mCloseBtn;
 	private View layout;
@@ -123,10 +124,10 @@ public class Main extends BaseActivity implements View.OnTouchListener{
 	private ListView listView;
 	private ListViewAdapter adapter;
 	private Pager pager = new Pager(0, 20);
-	
-	
-	
-	
+
+	private int visibleLastIndex = 0; //
+	private int visibleItemCount; //
+
 	private BufferedReader in = null;
 	private PrintWriter out = null;
 
@@ -134,8 +135,7 @@ public class Main extends BaseActivity implements View.OnTouchListener{
 	private Handler mHandler;
 
 	// private Button mRightBtn;
-	
-	
+
 	protected static final int CONTEXTMENU_SENDITEM = 0;
 	protected static final int CONTEXTMENU_DELETEITEM = 1;
 
@@ -148,11 +148,9 @@ public class Main extends BaseActivity implements View.OnTouchListener{
 		service = new PreferencesService(this);// 放到oncreate,只需要实例化一次这个对象就可以了
 		mHandler = new Handler();
 
-		
-
 		// 启动activity时不自动弹出软键盘
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-		
+
 		instance = this;
 
 		mTabPager = (ViewPager) findViewById(R.id.tabpager);
@@ -163,12 +161,11 @@ public class Main extends BaseActivity implements View.OnTouchListener{
 		mTab3 = (ImageView) findViewById(R.id.img_settings);
 
 		mTabImg = (ImageView) findViewById(R.id.img_tab_now);
-		
-		
-		mLayer1 = (LinearLayout)findViewById(R.id.layertabindex);
-		mLayer2 = (LinearLayout)findViewById(R.id.layertabhistory);
-		mLayer3 = (LinearLayout)findViewById(R.id.layertabsettings);
-		
+
+		mLayer1 = (LinearLayout) findViewById(R.id.layertabindex);
+		mLayer2 = (LinearLayout) findViewById(R.id.layertabhistory);
+		mLayer3 = (LinearLayout) findViewById(R.id.layertabsettings);
+
 		mTabImg.setMinimumWidth(mLayer1.getWidth());
 
 		mTab1.setOnClickListener(new MyOnClickListener(0));
@@ -180,7 +177,7 @@ public class Main extends BaseActivity implements View.OnTouchListener{
 		int displayHeight = currDisplay.getHeight();
 		one = displayWidth / 3; // 设置水平动画平移大小
 		two = one * 2;
-		
+
 		// Log.i("info", "获取的屏幕分辨率为" + one + two + three + "X" + displayHeight);
 
 		// 将要分页显示的View装入数组中
@@ -197,12 +194,10 @@ public class Main extends BaseActivity implements View.OnTouchListener{
 
 		// 初始化所有元素 ,findviewbyid
 		init();
-		
-		
-		//加入日期触摸选择
+
+		// 加入日期触摸选择
 		etcwsj.setOnTouchListener(this);
-		
-		
+
 		PagerAdapter mPagerAdapter = new PagerAdapter() {
 
 			@Override
@@ -231,18 +226,16 @@ public class Main extends BaseActivity implements View.OnTouchListener{
 				return views.get(position);
 			}
 		};
-		
-		mTabPager.setAdapter(mPagerAdapter);
-		
 
-		
-		//设置当前时间到 etcwsj
+		mTabPager.setAdapter(mPagerAdapter);
+
+		// 设置当前时间到 etcwsj
 		setCurrentTime();
-		
-		//设置本地历史记录适配器
+
+		// 设置本地历史记录适配器
 		setListView();
-		
-		//增加listview上下文菜单
+
+		// 增加listview上下文菜单
 		listView.setOnCreateContextMenuListener(new OnCreateContextMenuListener() {
 
 			public void onCreateContextMenu(ContextMenu conMenu, View view, ContextMenuInfo info) {
@@ -252,23 +245,23 @@ public class Main extends BaseActivity implements View.OnTouchListener{
 				/* Add as many context-menu-options as you want to. */
 			}
 		});
-		
-		//读取配置信息
-		setinitconfig();
-		
-		
 
+		// 增加listview滚动监听
+		listView.setOnScrollListener(this);
+
+		// 读取配置信息
+		setinitconfig();
 
 	}
-	
-	
-	private void setinitconfig(){
+
+	private void setinitconfig() {
 		Map<String, String> params = service.getPreference();
 		etserverip.setText(params.get("ip"));
 		etserverport.setText(params.get("port"));
 		etserverurl.setText(params.get("serverurl"));
-		
+
 	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -343,7 +336,7 @@ public class Main extends BaseActivity implements View.OnTouchListener{
 		@Override
 		public void onClick(View v) {
 			mTabPager.setCurrentItem(index);
-			
+
 		}
 	};
 
@@ -352,17 +345,17 @@ public class Main extends BaseActivity implements View.OnTouchListener{
 		listView = (ListView) mView2.findViewById(R.id.lvtemp);
 		initializeAdapter();
 		listView.setAdapter(adapter);
-		
+
 	};
 
 	private void initializeAdapter() {
 
-		List<Temperature> lts = db.findAllByWhere(Temperature.class, "1=1 Order by cwsj desc  limit " + pager.getIndex() + ", " + pager.getView_Count());
+		List<Temperature> lts = db.findAllByWhere(Temperature.class, "1=1 Order by id desc  limit " + pager.getIndex() + ", " + pager.getView_Count());
 		adapter = new ListViewAdapter(this, lts);
 
 	}
-	
-	//listview的上下文菜单
+
+	// listview的上下文菜单
 	@Override
 	public boolean onContextItemSelected(MenuItem aItem) {
 		ContextMenuInfo menuInfo = (ContextMenuInfo) aItem.getMenuInfo();
@@ -493,53 +486,50 @@ public class Main extends BaseActivity implements View.OnTouchListener{
 	 * @param v
 	 */
 	public void btncommitserver(View v) {
-		
 
 		Map<String, String> settingparams = service.getPreference();
 		String serverurl = settingparams.get("serverurl");
 		AjaxParams params = new AjaxParams();
-		  params.put("cwsj", this.etcwsj.getText().toString());
-		  params.put("t1", this.etwd1.getText().toString());
-		  params.put("t2", this.etwd2.getText().toString());
-		  params.put("t3", this.etwd3.getText().toString());
-		  params.put("wz", this.etwz.getText().toString());
-		  params.put("bd", this.etbd.getText().toString());
-		  params.put("cw", this.etcw.getText().toString());
-		  params.put("gc", this.etgc.getText().toString());
-		  
-		  params.put("jd", this.etjd.getText().toString());
-		  params.put("wd", this.etwd.getText().toString());
-		
-		  params.put("hjwd", this.ethjwd.getText().toString());
-		  params.put("hjsd", this.ethjsd.getText().toString());
+		params.put("cwsj", this.etcwsj.getText().toString());
+		params.put("t1", this.etwd1.getText().toString());
+		params.put("t2", this.etwd2.getText().toString());
+		params.put("t3", this.etwd3.getText().toString());
+		params.put("wz", this.etwz.getText().toString());
+		params.put("bd", this.etbd.getText().toString());
+		params.put("cw", this.etcw.getText().toString());
+		params.put("gc", this.etgc.getText().toString());
 
+		params.put("jd", this.etjd.getText().toString());
+		params.put("wd", this.etwd.getText().toString());
 
-		  
-		  FinalHttp fh = new FinalHttp();
-		  fh.post(serverurl, params, new AjaxCallBack<Object>(){
-		        @Override
-		        public void onLoading(long count, long current) {
-//		                textView.setText(current+"/"+count);
-		        }
-		        @Override
-		        public void onSuccess(Object t){
-		        	if(t.toString().equals("success")){
+		params.put("hjwd", this.ethjwd.getText().toString());
+		params.put("hjsd", this.ethjsd.getText().toString());
 
-			        	showToast("温度数据已经成功保存至服务器！");
-		        	}else{
-			        	showToast("提交至服务器失败！");
-		        	}
-		        };
-		        
-		        @Override
-		    	public void onFailure(Throwable t,int errorNo ,String strMsg){
-		        	showToast("提交数据失败！");
-		        };		        
-		        
-		  });
+		FinalHttp fh = new FinalHttp();
+		fh.post(serverurl, params, new AjaxCallBack<Object>() {
+			@Override
+			public void onLoading(long count, long current) {
+				// textView.setText(current+"/"+count);
+			}
+
+			@Override
+			public void onSuccess(Object t) {
+				if (t.toString().equals("success")) {
+
+					showToast("温度数据已经成功保存至服务器！");
+				} else {
+					showToast("提交至服务器失败！");
+				}
+			};
+
+			@Override
+			public void onFailure(Throwable t, int errorNo, String strMsg) {
+				showToast("提交数据失败！");
+			};
+
+		});
 	}
-	
-	
+
 	/**
 	 * 从选中列表内容提交到服务器
 	 * 
@@ -561,11 +551,10 @@ public class Main extends BaseActivity implements View.OnTouchListener{
 		params.put("bd", t.getBd());
 		params.put("cw", t.getCw());
 		params.put("gc", t.getGc());
-		
-		
+
 		params.put("jd", t.getJd());
 		params.put("wd", t.getWd());
-		
+
 		params.put("hjwd", t.getHjwd());
 		params.put("hjsd", t.getHjsd());
 
@@ -596,7 +585,6 @@ public class Main extends BaseActivity implements View.OnTouchListener{
 
 		});
 	}
-	
 
 	/**
 	 * 缺省配置
@@ -620,11 +608,11 @@ public class Main extends BaseActivity implements View.OnTouchListener{
 		mTabPager.setCurrentItem(0);
 
 	}
-	
-	public void startAbout(View v){
-		Intent intent = new Intent (Main.this,About.class);			
-		startActivity(intent);	
-		
+
+	public void startAbout(View v) {
+		Intent intent = new Intent(Main.this, About.class);
+		startActivity(intent);
+
 	}
 
 	/**
@@ -653,7 +641,6 @@ public class Main extends BaseActivity implements View.OnTouchListener{
 		}
 		return menu_display;
 	}
-
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
@@ -702,7 +689,6 @@ public class Main extends BaseActivity implements View.OnTouchListener{
 
 						sb.append("  ");
 
-
 						sb.append(String.format("%02d:%02d", timePicker.getCurrentHour(), timePicker.getCurrentMinute()));
 
 						etcwsj.setText(sb);
@@ -722,12 +708,7 @@ public class Main extends BaseActivity implements View.OnTouchListener{
 
 		return true;
 	}
-	
-	
-	
-	
-	
-	
+
 	/**
 	 * 获取位置信息
 	 */
@@ -765,13 +746,13 @@ public class Main extends BaseActivity implements View.OnTouchListener{
 	};
 
 	private void updateWithNewLocation(Location result) {
-		
-//		Toast.makeText(MainActivity.this, "lat:" + result.getLatitude() + "  lon:" + result.getLongitude(), Toast.LENGTH_SHORT).show();
-		
+
+		// Toast.makeText(MainActivity.this, "lat:" + result.getLatitude() +
+		// "  lon:" + result.getLongitude(), Toast.LENGTH_SHORT).show();
+
 		etjd.setText(String.valueOf(result.getLongitude()));
 		etwd.setText(String.valueOf(result.getLatitude()));
 
-		
 		Geocoder geocoder = new Geocoder(Main.this, Locale.getDefault());
 
 		List<Address> addresses = null;
@@ -801,8 +782,7 @@ public class Main extends BaseActivity implements View.OnTouchListener{
 		((LocationManager) Main.this.getSystemService(Context.LOCATION_SERVICE)).removeUpdates(locationListener);
 
 	}
-	
-	
+
 	/**
 	 * 读取socket信息
 	 */
@@ -866,7 +846,7 @@ public class Main extends BaseActivity implements View.OnTouchListener{
 						socket.close();
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
-						temp[0] =e.getMessage();
+						temp[0] = e.getMessage();
 						mHandler.post(new Runnable() {
 							@Override
 							public void run() {
@@ -874,7 +854,7 @@ public class Main extends BaseActivity implements View.OnTouchListener{
 							}
 						});
 					}
-					temp[0] =e.getMessage();
+					temp[0] = e.getMessage();
 					mHandler.post(new Runnable() {
 						@Override
 						public void run() {
@@ -886,7 +866,7 @@ public class Main extends BaseActivity implements View.OnTouchListener{
 			} catch (UnknownHostException e) {
 				// TODO Auto-generated catch block
 				// ShowDialog(e.getMessage().toString());
-				temp[0] =e.getMessage();
+				temp[0] = e.getMessage();
 				mHandler.post(new Runnable() {
 					@Override
 					public void run() {
@@ -895,8 +875,8 @@ public class Main extends BaseActivity implements View.OnTouchListener{
 				});
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				
-				temp[0] =e.getMessage();
+
+				temp[0] = e.getMessage();
 				mHandler.post(new Runnable() {
 					@Override
 					public void run() {
@@ -906,28 +886,53 @@ public class Main extends BaseActivity implements View.OnTouchListener{
 			}
 		}
 	};
-	
-	
-	
 
 	public ListView getListView() {
 		return listView;
 	}
 
-
 	public void setListView(ListView listView) {
 		this.listView = listView;
 	}
-
 
 	public FinalDb getDb() {
 		return db;
 	}
 
-
 	public void setDb(FinalDb db) {
 		this.db = db;
 	}
-	
-	
+
+	/**
+	 * 增加滚动加载数据功能
+	 * 
+	 */
+	@Override
+	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+		// TODO Auto-generated method stub
+		this.visibleItemCount = visibleItemCount;
+		visibleLastIndex = firstVisibleItem + visibleItemCount ;
+		Log.d("blue debug", String.format("visibleItemCount=%d ,visibleLastIndex=%d ", visibleItemCount,visibleLastIndex));
+
+	}
+
+	@Override
+	public void onScrollStateChanged(AbsListView view, int scrollState) {
+		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub
+		
+		int itemsLastIndex = adapter.getCount(); // 
+		int lastIndex = itemsLastIndex; // 
+		
+		
+		Log.d("blue debug", String.format("itemsLastIndex=%d ,lastIndex=%d ", itemsLastIndex,lastIndex));
+
+
+		if (scrollState == OnScrollListener.SCROLL_STATE_IDLE && visibleLastIndex >= lastIndex) {
+			List<Temperature> lts = db.findAllByWhere(Temperature.class, "1=1 Order by id desc limit " + lastIndex + ", " + pager.getView_Count());
+			adapter.addAllItem(lts);
+			adapter.notifyDataSetChanged();
+		}
+	}
+
 }
