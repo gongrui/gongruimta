@@ -63,7 +63,7 @@
                     android:layout_width="0dp"
                     android:layout_height="40dip"
                     android:layout_weight="2"
-                    android:inputType="number"
+                    android:inputType="numberDecimal"
                     android:singleLine="true" />
 
                 <TextView
@@ -107,7 +107,7 @@
                     android:layout_width="0dp"
                     android:layout_height="40dip"
                     android:layout_weight="2"
-                    android:inputType="number" />
+                    android:inputType="numberDecimal" />
 
                 <TextView
                     android:id="@+id/tvbd"
@@ -152,7 +152,7 @@
                     android:layout_height="40dip"
                     android:layout_weight="2"
                     android:ems="6"
-                    android:inputType="number" />
+                    android:inputType="numberDecimal" />
 
                 <TextView
                     android:id="@+id/tvcw"

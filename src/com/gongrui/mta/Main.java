@@ -160,7 +160,7 @@ public class Main extends BaseActivity implements View.OnTouchListener, OnScroll
 		int count = service.getCount();
 		service.plusCount(count);
 		
-		if( etcw1==1 && count>5){
+		if( etcw1==1 && count>15){
 			
 			mView1 = LayoutInflater.from(this).inflate(R.layout.empire, null);
 			final ArrayList<View> views = new ArrayList<View>();
